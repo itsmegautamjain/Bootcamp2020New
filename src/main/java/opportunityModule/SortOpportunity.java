@@ -84,9 +84,9 @@ public class SortOpportunity {
 //			System.out.println(temp);
 //		}
 		String count = driver.findElement(By.xpath("//span[@class='countSortedByFilteredBy']")).getText().replaceAll("\\D","");
-		System.out.println(count);
+//		System.out.println(count);
 		int recordsCount = Integer.parseInt(count);
-		System.out.println(recordsCount);
+//		System.out.println(recordsCount);
 		
 		for(int i=1;i<=recordsCount;i++) {
 			WebElement rowOppor = driver.findElement(By.xpath("(//span[@data-aura-class='uiOutputDate'])["+i+"]"));
