@@ -50,7 +50,7 @@ public class OpportunityModule extends ActionSpecificBaseMethods {
 	public void setUp(String browser) {
 		
 		startApp(browser,"https://login.salesforce.com");
-		LoginPage login = new LoginPage(driver);
+		LoginPage login = new LoginPage();
 		login.enterUsername(userName).enterPassword(password).clickOnLoginButton()
 															 .clickOnToggleMenuButton()
 															 .clickOnViewAllButton()
@@ -61,7 +61,7 @@ public class OpportunityModule extends ActionSpecificBaseMethods {
 	@Test(priority=0,enabled=false)
 	public void createOpportunity() {
 								
-				HomePage createOpportunity = new HomePage(driver);
+				HomePage createOpportunity = new HomePage();
 				createOpportunity.clickOnNewButton().enterOpportunityName(opporName)
 													.selectValueFromStageDropdown(stageVal)
 													.selectCloseDate(dateTobeSelected,"No")
@@ -73,7 +73,7 @@ public class OpportunityModule extends ActionSpecificBaseMethods {
 	@Test(priority=1)
 	public void createOpportunityWithoutMandatoryFields() {
 		
-		HomePage createOpporWithoutMandatoryFields = new HomePage(driver);
+		HomePage createOpporWithoutMandatoryFields = new HomePage();
 		
 		createOpporWithoutMandatoryFields.clickOnNewButton()
 									    	.selectCloseDate(dateTobeSelected, "1")
@@ -87,7 +87,7 @@ public class OpportunityModule extends ActionSpecificBaseMethods {
 	@Test(priority=2,dependsOnMethods="createOpportunity",enabled=false)
 	public void editOpportunity() {
 		
-				HomePage editOpportunity = new HomePage(driver);
+				HomePage editOpportunity = new HomePage();
 				
 						editOpportunity.searchOpportunity(opporName)
 										.clickOnOpportunityCheckbox()
@@ -106,7 +106,7 @@ public class OpportunityModule extends ActionSpecificBaseMethods {
 	@Test(priority=3,enabled=false)
 	public void sortOpportunity() {
 		
-		HomePage sortOpportunity = new HomePage(driver);
+		HomePage sortOpportunity = new HomePage();
 		
 					sortOpportunity.selectTableView()
 									.sortOpportunityInAscendingOrder();
@@ -116,7 +116,7 @@ public class OpportunityModule extends ActionSpecificBaseMethods {
 	@Test(priority=4,dependsOnMethods="createOpportunity",enabled=false)
 	public void deleteOpportunity() {
 		
-				HomePage deleteOpportunity = new HomePage(driver); 
+				HomePage deleteOpportunity = new HomePage(); 
 				
 							deleteOpportunity.searchOpportunity(opporName)
 											 .clickOnOpportunityCheckbox()

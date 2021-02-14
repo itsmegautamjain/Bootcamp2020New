@@ -10,7 +10,7 @@ public class CreateNewServiceAppointment extends SalesForceSpecificMethods {
 	@Test
 	public void createNewServiceAppointment() {
 		System.out.println("Executing CreateNewServiceAppointment");
-		ServiceAppointmentPage createNewServiceAppointment = new ServiceAppointmentPage(driver);
+		ServiceAppointmentPage createNewServiceAppointment = new ServiceAppointmentPage();
 								createNewServiceAppointment.clickOnServiceAppointment()
 							   							    .clickOnNewButton()
 							   							    .enterDescription("Creating Service Appointment")

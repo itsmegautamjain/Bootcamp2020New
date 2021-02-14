@@ -27,7 +27,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class ActionSpecificBaseMethods implements ActionSpecificMethods {
 	
-	public WebDriver driver;
+	public static WebDriver driver;
 	public static ChromeOptions options;
 	public static FirefoxOptions optionsFirefox;
 //	public static EdgeOptions optionsEdge;

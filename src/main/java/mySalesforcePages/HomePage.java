@@ -19,9 +19,9 @@ import io.cucumber.java.en.When;
 
 public class HomePage extends ActionSpecificBaseMethods{
 	
-	public HomePage(WebDriver driver) {
-		this.driver = driver;
-	}
+//	public HomePage(WebDriver driver) {
+//		this.driver = driver;
+//	}
 
 	@And("Click on the toggle menu button from the left corner")
 	public HomePage clickOnToggleMenuButton() {

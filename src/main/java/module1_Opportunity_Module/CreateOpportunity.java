@@ -22,7 +22,7 @@ public class CreateOpportunity extends SalesForceSpecificMethods {
 	@Test(dataProvider="dataForSalesforceModules",groups= {"No"})
 	public void createOpportunity(String opporName,String stageVal, String dateTobeSelected) {
 				System.out.println("Executing Create Opportunity");				
-				HomePage createOpportunity = new HomePage(driver);
+				HomePage createOpportunity = new HomePage();
 				createOpportunity.clickOnSalesButton().clickOnOpportunityTab()	
 													  .clickOnNewButton()
 													  .enterOpportunityName(opporName)

@@ -7,9 +7,9 @@ import io.cucumber.java.en.And;
 
 public class LoginPage extends ActionSpecificBaseMethods {
 	
-	public LoginPage(WebDriver driver) {
-		this.driver = driver;
-	}
+//	public LoginPage(WebDriver driver) {
+//		this.driver = driver;
+//	}
 
 	@And("Enter Username as {string}")
 	public LoginPage enterUsername(String userName) {
@@ -26,7 +26,7 @@ public class LoginPage extends ActionSpecificBaseMethods {
 	@And("Click on Login button")
 	public HomePage clickOnLoginButton() {
 		clickElement(locateElement("Xpath","//input[@id='Login']"));
-		return new HomePage(driver);
+		return new HomePage();
 	}
 	
 }

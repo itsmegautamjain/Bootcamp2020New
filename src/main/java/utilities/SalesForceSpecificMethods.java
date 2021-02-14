@@ -35,7 +35,7 @@ public class SalesForceSpecificMethods extends ActionSpecificBaseMethods {
 	public void setUp(String browser) {
 		
 		startApp(browser,"https://login.salesforce.com");
-		LoginPage login = new LoginPage(driver);
+		LoginPage login = new LoginPage();
 		login.enterUsername(userName).enterPassword(password).clickOnLoginButton()
 															 .clickOnToggleMenuButton()
 															 .clickOnViewAllButton();

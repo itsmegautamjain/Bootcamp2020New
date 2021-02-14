@@ -21,7 +21,7 @@ public class CreateOpportunityWithoutMandatoryFields extends SalesForceSpecificM
 	@Test(dataProvider="dataForSalesforceModules",groups= {"No"})
 	public void createOpportunityWithoutMandatoryFields(String dateTobeSelected) {
 		System.out.println("Executing CreateOpportunityWithoutMandatory");
-		HomePage createOpporWithoutMandatoryFields = new HomePage(driver);
+		HomePage createOpporWithoutMandatoryFields = new HomePage();
 		
 		createOpporWithoutMandatoryFields.clickOnSalesButton()
 											.clickOnOpportunityTab()

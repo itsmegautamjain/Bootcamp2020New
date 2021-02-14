@@ -5,9 +5,9 @@ import baseClasses.ActionSpecificBaseMethods;
 
 public class ServiceAppointmentPage extends ActionSpecificBaseMethods {
 
-	public ServiceAppointmentPage(WebDriver driver) {
-		this.driver = driver;
-	}
+//	public ServiceAppointmentPage(WebDriver driver) {
+//		this.driver = driver;
+//	}
 	
 	public ServiceAppointmentPage clickOnServiceAppointment() {
 		//This method will click on the Service Appointment link

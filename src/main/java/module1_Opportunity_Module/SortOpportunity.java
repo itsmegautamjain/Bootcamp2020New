@@ -22,7 +22,7 @@ public class SortOpportunity extends SalesForceSpecificMethods {
 	@Test(dataProvider="dataForSalesforceModules",groups= {"No"})
 	public void sortOpportunity(String iteration) {
 		System.out.println("Executing Sort Opportunity "+iteration);
-		HomePage sortOpportunity = new HomePage(driver);
+		HomePage sortOpportunity = new HomePage();
 		
 					sortOpportunity.clickOnSalesButton()
 									.clickOnOpportunityTab()

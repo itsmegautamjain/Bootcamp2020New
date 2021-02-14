@@ -11,9 +11,9 @@ import baseClasses.ActionSpecificBaseMethods;
 
 public class Assesment02Page extends ActionSpecificBaseMethods {
 
-	public Assesment02Page(WebDriver driver) {
-		this.driver = driver;
-	}
+//	public Assesment02Page(WebDriver driver) {
+//		this.driver = driver;
+//	}
 	
 	public Assesment02Page clickOnServiceLink() {
 		//This method will click on Service link

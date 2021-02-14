@@ -21,7 +21,7 @@ public class EditOpportunity extends SalesForceSpecificMethods {
 	@Test(dataProvider="dataForSalesforceModules",groups= {"No"})
 	public void editOpportunity(String opporName,String dateTobeSelected, String stageVal2, String deliveryVal,String description) {
 			System.out.println("Executing Edit Opportunity");
-				HomePage editOpportunity = new HomePage(driver);
+				HomePage editOpportunity = new HomePage();
 				
 						editOpportunity.clickOnSalesButton()
 										.clickOnOpportunityTab()

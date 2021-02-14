@@ -21,7 +21,7 @@ public class DeleteOpportunity extends SalesForceSpecificMethods {
 	@Test(dataProvider="dataForSalesforceModules",groups= {"No"})
 	public void deleteOpportunity(String opporName) {
 		
-				HomePage deleteOpportunity = new HomePage(driver); 
+				HomePage deleteOpportunity = new HomePage(); 
 				
 							deleteOpportunity.clickOnSalesButton()
 											 .clickOnOpportunityTab()
