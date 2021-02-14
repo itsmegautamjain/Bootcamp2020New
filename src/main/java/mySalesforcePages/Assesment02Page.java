@@ -1,7 +1,14 @@
 package mySalesforcePages;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -34,11 +41,17 @@ public class Assesment02Page extends ActionSpecificBaseMethods {
 		return this;
 	}
 	
-	public Assesment02Page clickOnLeads() {
+	public Assesment02Page clickOnLeads() throws MalformedURLException, IOException {
 		// This method will click on Leads link 
 			WebElement iframe = driver.findElement(By.xpath("//iframe[contains(@class,'reportsReportBuilder')]"));
 			driver.switchTo().frame(iframe);
 			clickElement(locateElement("Xpath", "//span[text()='Leads']"));
+			String src = getAttributeFromElement(locateElement("Xpath", "//img[@id='thePage:dummyForm:report_img']"), "src");
+			System.out.println(src);
+			BufferedImage bufferedImage = ImageIO.read(new URL(src));
+			File outputfile = new File("saved.png");
+			ImageIO.write(bufferedImage, "png", outputfile);
+
 			clickElement(locateElement("Xpath", "//input[@value='Create']"));
 			driver.switchTo().defaultContent();
 		return this;
