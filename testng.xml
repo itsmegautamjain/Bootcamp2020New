@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="RTL352" configfailurepolicy="continue" >
+  <test thread-count="5" name="Regression" >
+  <parameter name="Browser" value="Chrome"></parameter>
+  <groups>
+  	<run>
+  	
+		<exclude name="No"/>
+		
+  	</run>
+  
+  </groups> 
+  
+     <classes>
+       <class name="module1_Opportunity_Module.CreateOpportunity"/>  
+       <class name="module1_Opportunity_Module.CreateOpportunityWithoutMandatoryFields"/>  
+       <class name="module1_Opportunity_Module.EditOpportunity"/> 
+       <class name="module1_Opportunity_Module.SortOpportunity"/>     
+    </classes>
+  </test> <!-- Test -->    
+</suite> <!-- Suite -->

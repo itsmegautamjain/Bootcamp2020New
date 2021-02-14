@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -27,7 +28,7 @@ public class EditOpportunity {
 		WebDriverManager.chromedriver().setup();
 		ChromeDriver driver = new ChromeDriver(options);
 		Actions action = new Actions(driver);
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		WebDriverWait wait = new WebDriverWait(driver,30);
 		
 		//1. Login to https://login.salesforce.com
 		driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
@@ -57,9 +58,12 @@ public class EditOpportunity {
 		driver.findElement(By.xpath("//input[@name='Opportunity-search-input']")).sendKeys(Keys.ENTER);
 		
 		//6. Click on the Dropdown icon and Select Edit
-		Thread.sleep(5000);
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]"))).click();
-		Thread.sleep(2000);
+		try {
+		driver.findElement(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]")).click();
+		}catch(StaleElementReferenceException e){
+			executor.executeScript("arguments[0].scrollIntoView();",driver.findElement(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]")));
+			driver.findElement(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]")).click();
+		}
 		driver.findElement(By.xpath("//a[contains(@class,'slds-button slds-button--icon-x-small')]")).click();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@title='Edit']"))).click();
 		
@@ -97,17 +101,12 @@ public class EditOpportunity {
 		//8. Select 'Stage' as Perception Analysis
 		String stageVal = "Perception Analysis";
 		driver.findElement(By.xpath("//span[text()='Stage'][1]/parent::span/following-sibling::div")).click();		
-		Thread.sleep(2000);
-//		executor.executeScript("arguments[0].click();",driver.findElement(By.xpath("//a[text()='\"+stageVal+\"']")));
-		driver.findElement(By.xpath("//a[text()='"+stageVal+"']")).click();
-		
+		driver.findElement(By.xpath("//a[text()='"+stageVal+"']")).click();		
 		
 		//9. Select Deliver Status as In Progress
 		String deliveryVal = "In progress";
 		driver.findElement(By.xpath("//span[text()='Delivery/Installation Status'][1]/parent::span/following-sibling::div")).click();
-		Thread.sleep(2000);
 		action.moveToElement(driver.findElement(By.xpath("//a[@title='"+deliveryVal+"']"))).click().build().perform();
-//		driver.findElement(By.xpath("//a[@title='"+deliveryVal+"']"));
 		
 		//10. Enter Description as SalesForce
 		driver.findElement(By.xpath("//textarea[@class=' textarea']")).clear();
@@ -115,7 +114,6 @@ public class EditOpportunity {
 		
 		//11. Click on Save and Verify Stage as Perception Analysis
 		driver.findElement(By.xpath("//button[@title='Save']//span[1]")).click();
-		Thread.sleep(3000);
 		String stage = driver.findElement(By.xpath("//table/tbody/tr/td[5]")).getText();
 		if(stage.contains("Perception Analysis")) {
 			System.out.println("Stage is displayed correctly and displayed as:- "+stage);
@@ -125,11 +123,10 @@ public class EditOpportunity {
 		}
 		
 		//Log-Out
-		Thread.sleep(5000);
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]")));
-		action.moveToElement(driver.findElement(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]"))).click().build().perform();	
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")));
+		driver.findElement(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Log Out']")));
 		action.moveToElement(driver.findElement(By.xpath("//a[text()='Log Out']"))).click().build().perform();
-		Thread.sleep(2000);
 		
 		//Closing drivers
 		driver.close();

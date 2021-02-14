@@ -26,7 +26,7 @@ public class CreateOpportunity {
 		WebDriverManager.chromedriver().setup();
 		ChromeDriver driver = new ChromeDriver(options);
 		Actions action = new Actions(driver);
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		WebDriverWait wait = new WebDriverWait(driver, 30);
 		
 		//1. Login to https://login.salesforce.com
 		driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
@@ -54,10 +54,9 @@ public class CreateOpportunity {
 		driver.findElement(By.xpath("//div[text()='New']")).click();
 		
 		//6. Enter Opportunity name as 'Salesforce Automation by Your Name, Get the text and Store it 
-		//Thread.sleep(5000);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='New Opportunity']")));		
-		driver.findElement(By.xpath("((//span[text()='Opportunity Name'])[2]/parent::label)/following-sibling::input")).sendKeys("Salesforce Automation by Gautam Jain");		
 		String opporName = "Salesforce Automation by Gautam Jain";
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='New Opportunity']")));		
+		driver.findElement(By.xpath("((//span[text()='Opportunity Name'])[2]/parent::label)/following-sibling::input")).sendKeys(opporName);				
 		
 		//8. Select 'Stage' as Need Analysis
 		String stageVal = "Needs Analysis";
@@ -107,11 +106,10 @@ public class CreateOpportunity {
 		}
 		
 		//Log-Out
-		Thread.sleep(5000);
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]")));
-		action.moveToElement(driver.findElement(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]"))).click().build().perform();	
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")));
+		driver.findElement(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Log Out']")));
 		action.moveToElement(driver.findElement(By.xpath("//a[text()='Log Out']"))).click().build().perform();
-		Thread.sleep(2000);
 		
 		//Closing drivers
 		driver.close();

@@ -26,7 +26,7 @@ public class CreateOpportunityWithoutMandatoryFields {
 		WebDriverManager.chromedriver().setup();
 		ChromeDriver driver = new ChromeDriver(options);
 		Actions action = new Actions(driver);
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		WebDriverWait wait = new WebDriverWait(driver, 30);
 		
 		//1. Login to https://login.salesforce.com
 		driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
@@ -88,22 +88,20 @@ public class CreateOpportunityWithoutMandatoryFields {
 		driver.findElement(By.xpath("//button[@title='Save']//span[1]")).click();
 		
 		//8. Verify the Alert message (Complete this field) displayed for Name and Stage
-		Thread.sleep(2000);
 		if (driver.findElement(By.xpath("//li[text()='These required fields must be completed: Opportunity Name, Stage']")).isDisplayed()) {
 			System.out.println("Error Msg is displayed correctly");
 		}
 		else {
 			System.out.println("Error Msg is not displayed correctly");
 		}
-		Thread.sleep(2000);
+//		Thread.sleep(2000);
 		driver.findElement(By.xpath("//button[@title='Cancel']")).click();
 				
 		//Logout
-		Thread.sleep(2000);
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]")));
-		action.moveToElement(driver.findElement(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]"))).click().build().perform();	
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")));
+		driver.findElement(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Log Out']")));
 		action.moveToElement(driver.findElement(By.xpath("//a[text()='Log Out']"))).click().build().perform();
-		Thread.sleep(2000);
 		
 		//Closing drivers
 		driver.close();

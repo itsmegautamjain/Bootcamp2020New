@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -24,7 +25,7 @@ public class DeleteOpportunity {
 		WebDriverManager.chromedriver().setup();
 		ChromeDriver driver = new ChromeDriver(options);
 		Actions action = new Actions(driver);
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		WebDriverWait wait = new WebDriverWait(driver,30);
 		
 		//1. Login to https://login.salesforce.com
 		driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
@@ -54,20 +55,22 @@ public class DeleteOpportunity {
 		driver.findElement(By.xpath("//input[@name='Opportunity-search-input']")).sendKeys(Keys.ENTER);
 		
 		//6. Click on  the Dropdown icon and Select Delete
-		Thread.sleep(5000);
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]"))).click();
-		Thread.sleep(2000);
+		try {
+		driver.findElement(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]")).click();
+		}catch(StaleElementReferenceException e){
+			executor.executeScript("arguments[0].scrollIntoView();",driver.findElement(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]")));
+			driver.findElement(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]")).click();
+		}
 		driver.findElement(By.xpath("//a[contains(@class,'slds-button slds-button--icon-x-small')]")).click();
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@title='Delete']"))).click();
 		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//h2[text()='Delete Opportunity']"))));
 		driver.findElement(By.xpath("//button[@title='Delete']")).click();
 		
 		//7. Verify Whether Opportunity is Deleted using Opportunity Name
-		Thread.sleep(5000);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[text()='No items to display.']")));
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='Opportunity-search-input']"))).clear();
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@name='Opportunity-search-input']"))).sendKeys(opporName);
 		driver.findElement(By.xpath("//input[@name='Opportunity-search-input']")).sendKeys(Keys.ENTER);
-		Thread.sleep(2000);
 		if(driver.findElements(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]")).size()>0){
 			System.out.println("Opportunity could not be deleted successfully, Please check");
 		}
@@ -76,10 +79,10 @@ public class DeleteOpportunity {
 		}
 		
 		//Log-Out
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]")));
-		action.moveToElement(driver.findElement(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]"))).click().build().perform();	
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")));
+		driver.findElement(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Log Out']")));
 		action.moveToElement(driver.findElement(By.xpath("//a[text()='Log Out']"))).click().build().perform();
-		Thread.sleep(2000);
 		
 		//Closing drivers
 		driver.close();

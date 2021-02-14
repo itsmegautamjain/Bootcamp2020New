@@ -28,7 +28,7 @@ public class CreateNewOrder {
 		WebDriverManager.chromedriver().setup();
 		ChromeDriver driver = new ChromeDriver(options);
 		Actions action = new Actions(driver);
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+		WebDriverWait wait = new WebDriverWait(driver, 40);
 		JavascriptExecutor executor = (JavascriptExecutor)driver;
 		
 		//1. Login to https://login.salesforce.com
@@ -50,12 +50,12 @@ public class CreateNewOrder {
 		//4. Click on the drop-down and select Orders
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@title='Show Navigation Menu']//lightning-primitive-icon")));
 		driver.findElement(By.xpath("//button[@title='Show Navigation Menu']//lightning-primitive-icon")).click();
-		Thread.sleep(3000);
-		executor.executeScript("arguments[0].click();",driver.findElement(By.xpath("//span[text()='Orders']")));
-		Thread.sleep(5000);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//a[@title='Orders'])[2]")));
+		executor.executeScript("arguments[0].click();",driver.findElement(By.xpath("(//a[@title='Orders'])[2]")));
 				
 		//5. Click on New
-		driver.findElement(By.xpath("//div[text()='New']")).click();
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@title='New']")));
+		driver.findElement(By.xpath("//a[@title='New']")).click();
 		
 		//6. Select Account Name
 		String accName = "Bootcamp";
@@ -113,13 +113,13 @@ public class CreateNewOrder {
 		else {
 			System.out.println("Order could not be created, Please check for errors");
 		}
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//a[@title='Details'])[2]")));
 				
 		//Log-Out
-		Thread.sleep(5000);
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]")));
-		action.moveToElement(driver.findElement(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]"))).click().build().perform();	
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")));
+		driver.findElement(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Log Out']")));
 		action.moveToElement(driver.findElement(By.xpath("//a[text()='Log Out']"))).click().build().perform();
-		Thread.sleep(2000);
 		
 		//Closing drivers
 		driver.close();

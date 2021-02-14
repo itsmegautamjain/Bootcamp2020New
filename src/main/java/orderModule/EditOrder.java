@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -34,7 +33,7 @@ public class EditOrder {
 		WebDriverManager.chromedriver().setup();
 		ChromeDriver driver = new ChromeDriver(options);
 		Actions action = new Actions(driver);
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+		WebDriverWait wait = new WebDriverWait(driver, 40);
 		JavascriptExecutor executor = (JavascriptExecutor)driver;
 		SoftAssert as = new SoftAssert();
 				
@@ -55,11 +54,10 @@ public class EditOrder {
 		driver.findElement(By.xpath("//p[text()='Service Console']")).click();
 		
 		//4. Click on the drop-down and select Orders
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@title='Show Navigation Menu']//lightning-primitive-icon")));
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@title='Show Navigation Menu']//lightning-primitive-icon")));
 		driver.findElement(By.xpath("//button[@title='Show Navigation Menu']//lightning-primitive-icon")).click();
-		Thread.sleep(3000);
-		executor.executeScript("arguments[0].click();",driver.findElement(By.xpath("//span[text()='Orders']")));
-		Thread.sleep(5000);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("(//a[@title='Orders'])[2]")));
+		executor.executeScript("arguments[0].click();",driver.findElement(By.xpath("(//a[@title='Orders'])[2]")));
 		
 		//5.Click drop down near Recently Viewed and Select All Orders
 		while(i==0) {
@@ -71,17 +69,16 @@ public class EditOrder {
 			i=1;
 		}
 		else {
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@title='Show Navigation Menu']//lightning-primitive-icon")));
 			driver.findElement(By.xpath("//button[@title='Show Navigation Menu']//lightning-primitive-icon")).click();
-			Thread.sleep(1000);
-//			executor.executeScript("arguments[0].click();",driver.findElement(By.xpath("//span[text()='Orders']")));
-//			Thread.sleep(5000);
+			wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//ul[@aria-label='Navigation Menu']/li[8]/div/a/span[2])//span")));
 			action.moveToElement(driver.findElement(By.xpath("(//ul[@aria-label='Navigation Menu']/li[8]/div/a/span[2])//span"))).click().build().perform();
 			}
 		}
 		i=0;
 
 		//6. Select the first result, click the dropdown of the result and click on Edit
-		Thread.sleep(3000);
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]")));
 		action.moveToElement(driver.findElement(By.xpath("(//input[@type='checkbox']/following-sibling::span)[3]"))).click().build().perform();
 		driver.findElement(By.xpath("//div[@id='split-left']/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/table[1]/tbody[1]/tr[1]/td[8]/span[1]/div[1]/a[1]/lightning-icon[1]/lightning-primitive-icon[1]")).click();
 		driver.findElement(By.xpath("//a[@title='Edit']")).click();
@@ -135,11 +132,10 @@ public class EditOrder {
 		driver.findElement(By.xpath("//button[@title='Save']//span[1]")).click();
 		
 		//Log-Out
-		Thread.sleep(5000);
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]")));
-		action.moveToElement(driver.findElement(By.xpath("(//div[@data-aura-class='uiTooltip'])[7]"))).click().build().perform();	
-		action.moveToElement(driver.findElement(By.xpath("//a[text()='Log Out']"))).click().build().perform();
-		Thread.sleep(2000);		
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")));
+		driver.findElement(By.xpath("//ul[@class='slds-global-actions']/li[8]//button")).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Log Out']")));
+		action.moveToElement(driver.findElement(By.xpath("//a[text()='Log Out']"))).click().build().perform();	
 		
 		//Closing drivers
 		driver.close();

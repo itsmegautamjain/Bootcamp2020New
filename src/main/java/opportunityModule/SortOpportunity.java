@@ -30,7 +30,7 @@ public class SortOpportunity {
 		WebDriverManager.chromedriver().setup();
 		ChromeDriver driver = new ChromeDriver(options);
 		Actions action = new Actions(driver);
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		WebDriverWait wait = new WebDriverWait(driver,30);
 		
 		//1. Login to https://login.salesforce.com
 		driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
@@ -60,33 +60,10 @@ public class SortOpportunity {
 		action.moveToElement(driver.findElement(By.xpath("//li[@title='Table']/a"))).click().build().perform();
 		
 		//6. Sort the Opportunities by Close Date in ascending order
-//		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//span[text()='Sort']/parent::a)[5]"))).click();
-		List<String> closeDate = new ArrayList<String>(); 
-//		closeDate = 
-//				List<WebElement> closeDate = driver.findElements(By.xpath("//table/tbody/tr/td[6]/span/span[1]/span[1]"));
-//				Thread.sleep(5000);
-//				List<WebElement> closeDate = driver.findElements(By.xpath("//span[@data-aura-class='uiOutputDate']"));
-		
-		
+		List<String> closeDate = new ArrayList<String>(); 		
 		Thread.sleep(2000);
-//		System.out.println(driver.findElements(By.xpath("//table/tbody/tr/td[6]/span/span[1]/span[1]")).get(0).getText());
-//		Thread.sleep(2000);
-//		for(WebElement el:closeDate) {
-//			System.out.println(el.getText());
-//		}
-//		Iterator<WebElement> itr = closeDate.iterator();
-//		while(itr.hasNext()) {
-//		    System.out.println(itr.next());
-//		}
-		
-//		for(int i=0;i<closeDate.size();i++) {
-//			String temp = driver.findElements(By.xpath("//table/tbody/tr/td[6]/span/span[1]/span[1]")).get(i).getText();
-//			System.out.println(temp);
-//		}
 		String count = driver.findElement(By.xpath("//span[@class='countSortedByFilteredBy']")).getText().replaceAll("\\D","");
-//		System.out.println(count);
 		int recordsCount = Integer.parseInt(count);
-//		System.out.println(recordsCount);
 		
 		for(int i=1;i<=recordsCount;i++) {
 			WebElement rowOppor = driver.findElement(By.xpath("(//span[@data-aura-class='uiOutputDate'])["+i+"]"));
@@ -97,19 +74,88 @@ public class SortOpportunity {
 				recordsCount = Integer.parseInt(count);
 			}
 		}
+		System.out.println("Total records count = "+recordsCount);
+		System.out.print(" ");
 		System.out.println(closeDate);
 		System.out.print("After");
-		List<String> closeDates = new ArrayList<String>();
-		SimpleDateFormat frmt = new SimpleDateFormat("MM/DD/YYYY");
-		SimpleDateFormat frmtNew = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss");
+		List<Date> closeDates = new ArrayList<Date>();
+		SimpleDateFormat frmt = new SimpleDateFormat("MM/dd/yyyy");
 		for (String str:closeDate) {
-			Date dt = frmt.parse(str);
-			String dtt = frmtNew.format(dt);
+			Date dtt = frmt.parse(str);
 			closeDates.add(dtt);
 		}
 		System.out.println(closeDates);
-
+		System.out.print("Ascending order:- ");
+		List<Date> ascUi = new ArrayList<Date>();
+		List<Date> dscUi = new ArrayList<Date>();
+		ascUi.addAll(closeDates);
+		Collections.sort(ascUi);
+		System.out.println(ascUi);
+		System.out.print("Descending Order ");
+		dscUi.addAll(closeDates);
+		Collections.sort(dscUi,Collections.reverseOrder());
+		System.out.println(dscUi);
 		
+		
+		executor.executeScript("arguments[0].scrollIntoView();", driver.findElement(By.xpath("//span[@title='Close Date']/parent::a")));
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@title='Close Date']/parent::a"))).click();
+		
+		List<String> closeDateAfterSort = new ArrayList<String>(); 		
+		Thread.sleep(2000);
+		count = driver.findElement(By.xpath("//span[@class='countSortedByFilteredBy']")).getText().replaceAll("\\D","");
+		recordsCount = Integer.parseInt(count);
+		
+		for(int i=1;i<=recordsCount;i++) {
+			WebElement rowOppor = driver.findElement(By.xpath("(//span[@data-aura-class='uiOutputDate'])["+i+"]"));
+			executor.executeScript("arguments[0].scrollIntoView();", rowOppor);
+			closeDateAfterSort.add(rowOppor.getText());
+			if(i==recordsCount) {
+				count = driver.findElement(By.xpath("//span[@class='countSortedByFilteredBy']")).getText().replaceAll("\\D","");
+				recordsCount = Integer.parseInt(count);
+			}
+		}
+		System.out.print("After Sorting");
+		List<Date> closeDateAfterSortDesc = new ArrayList<Date>();
+		for(String str:closeDateAfterSort) {
+			Date dtt = frmt.parse(str);
+			closeDateAfterSortDesc.add(dtt);
+		}
+		
+		System.out.println(closeDateAfterSortDesc);
+		
+		executor.executeScript("arguments[0].scrollIntoView();", driver.findElement(By.xpath("//span[@title='Close Date']/parent::a")));
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@title='Close Date']/parent::a"))).click();
+		
+		List<String> closeDateAfterSort2 = new ArrayList<String>(); 		
+		Thread.sleep(2000);
+		count = driver.findElement(By.xpath("//span[@class='countSortedByFilteredBy']")).getText().replaceAll("\\D","");
+		recordsCount = Integer.parseInt(count);
+		
+		for(int i=1;i<=recordsCount;i++) {
+			WebElement rowOppor = driver.findElement(By.xpath("(//span[@data-aura-class='uiOutputDate'])["+i+"]"));
+			executor.executeScript("arguments[0].scrollIntoView();", rowOppor);
+			closeDateAfterSort2.add(rowOppor.getText());
+			if(i==recordsCount) {
+				count = driver.findElement(By.xpath("//span[@class='countSortedByFilteredBy']")).getText().replaceAll("\\D","");
+				recordsCount = Integer.parseInt(count);
+			}
+		}
+		System.out.print("After Sorting");
+		List<Date> closeDateAfterSortAsc = new ArrayList<Date>();
+		for(String str:closeDateAfterSort2) {
+			Date dtt = frmt.parse(str);
+			closeDateAfterSortAsc.add(dtt);
+		}
+		
+		System.out.println(closeDateAfterSortAsc);
+		
+		
+		if(ascUi.equals(closeDateAfterSortAsc)) {
+			System.out.println("Sorted in Ascending order");
+		}
+		else {
+			System.out.println("Sorted in Descending order");
+		}
 	}
 
 }

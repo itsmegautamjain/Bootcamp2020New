@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite configfailurepolicy="continue" guice-stage="DEVELOPMENT" name="Failed suite [RTL352]">
+  <test thread-count="5" name="Regression(failed)">
+    <parameter name="Browser" value="Chrome"/>
+    <groups>
+      <run>
+        <exclude name="No"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="module1_Opportunity_Module.SortOpportunity">
+        <methods>
+          <include name="setUp"/>
+          <include name="closeDrivers"/>
+          <include name="logout"/>
+          <include name="setDriver2"/>
+          <include name="setDriver1"/>
+          <include name="sortOpportunity" invocation-numbers="0"/>
+          <include name="setDriver"/>
+        </methods>
+      </class> <!-- module1_Opportunity_Module.SortOpportunity -->
+    </classes>
+  </test> <!-- Regression(failed) -->
+</suite> <!-- Failed suite [RTL352] -->
